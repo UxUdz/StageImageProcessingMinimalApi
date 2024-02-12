@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# API Test</title>
+</head>
+<body>
+
+<h1>C# API Test</h1>
+
+<!-- Encrypt API -->
+<input type="file" id="encryptImageInput" accept="image/*">
+<label for="encryptionKey">Encryption Key (Optional): </label>
+<input type="text" id="encryptionKey" placeholder="Enter encryption key">
+<button onclick="encryptImage()">Encrypt Image</button>
+
+<!-- Encrypt Steganography API -->
+<input type="file" id="encryptSteganographyImageInput" accept="image/*">
+<label for="encryptionKeySteganography">Encryption Key (Optional): </label>
+<input type="text" id="encryptionKeySteganography" placeholder="Enter encryption key">
+<button onclick="encryptSteganographyImage()">Encrypt Steganography Image</button>
+
+<!-- Decrypt API -->
+<label for="encryptedImage">Encrypted Image Base64: </label>
+<input type="text" id="encryptedImage" placeholder="Enter encrypted image base64">
+<label for="decryptionKey">Encryption Key: </label>
+<input type="text" id="decryptionKey" placeholder="Enter decryption key">
+<button onclick="decryptImage()">Decrypt Image</button>
+
+<!-- Decrypt Steganography API -->
+<input type="file" id="decryptSteganographyImageInput" accept="image/*">
+<label for="encryptionKeySteganography">Encryption Key: </label>
+<input type="text" id="encryptionKeySteganography" placeholder="Enter encryption key">
+<button onclick="decryptSteganographyImage()">Decrypt Steganography Image</button>
+
+<!-- Display Results -->
+<h2>Results</h2>
+<div>
+    <p>Encrypted Image:</p>
+    <img id="encryptedImageView" alt="Encrypted Image">
+    <p>Encryption Key (Decoded): <span id="decodedEncryptionKey"></span></p>
+</div>
+<div>
+    <p>Decrypted Image:</p>
+    <img id="decryptedImageView" alt="Decrypted Image">
+</div>
+
+<script>
+    async function encryptImage() {
+        const imageInput = document.getElementById('encryptImageInput');
+        const encryptionKey = document.getElementById('encryptionKey').value;
+
+        const formData = new FormData();
+        formData.append('image', imageInput.files[0]);
+        formData.append('encryptionKey', encryptionKey);
+
+        const response = await fetch('http://localhost:5000/encrypt', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        displayEncryptedImage(result.encryptedImage);
+        displayDecodedKey(result.encryptionKey);
+    }
+
+    async function encryptSteganographyImage() {
+        const imageInput = document.getElementById('encryptSteganographyImageInput');
+        const encryptionKey = document.getElementById('encryptionKeySteganography').value;
+
+        const formData = new FormData();
+        formData.append('imageSteganography', imageInput.files[0]);
+        formData.append('encryptionKey', encryptionKey);
+
+        const response = await fetch('http://localhost:5000/encryptSteganography', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        displayEncryptedImage(result.encryptedImage);
+        displayDecodedKey(result.encryptionKey);
+    }
+
+    async function decryptImage() {
+        const encryptedImage = document.getElementById('encryptedImage').value;
+        const decryptionKey = document.getElementById('decryptionKey').value;
+
+        const formData = new FormData();
+        formData.append('encryptedImage', encryptedImage);
+        formData.append('encryptionKey', decryptionKey);
+
+        const response = await fetch('http://localhost:5000/decrypt', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        displayDecryptedImage(result.decryptedBase64);
+    }
+
+    async function decryptSteganographyImage() {
+        const imageInput = document.getElementById('decryptSteganographyImageInput');
+        const encryptionKey = document.getElementById('encryptionKeySteganography').value;
+
+        const formData = new FormData();
+        formData.append('encryptedImageSteganography', imageInput.files[0]);
+        formData.append('encryptionKeySteganography', encryptionKey);
+
+        const response = await fetch('http://localhost:5000/decryptSteganography', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        displayDecryptedImage(result.decryptedBase64);
+    }
+
+    function displayEncryptedImage(base64String) {
+        const img = document.getElementById('encryptedImageView');
+        img.src = 'data:image/png;base64,' + base64String;
+    }
+
+    function displayDecryptedImage(base64String) {
+        const img = document.getElementById('decryptedImageView');
+        img.src = 'data:image/png;base64,' + base64String;
+    }
+
+    function displayDecodedKey(base64String) {
+        const decodedKeyElement = document.getElementById('decodedEncryptionKey');
+        //const decodedKey = atob(base64String);
+        decodedKeyElement.textContent = base64String;
+    }
+</script>
+
+</body>
+</html>

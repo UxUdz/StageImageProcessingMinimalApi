@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+	<Platforms>AnyCPU;x86;x64;ARM</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	<PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="C:\Emgu\emgucv-windesktop 4.7.0.5276\Emgu.CV.Platform\NetStandard\Emgu.CV.Platform.NetStandard.csproj" />
+	</ItemGroup>
+
+	<Import Project="C:\Emgu\emgucv-windesktop 4.7.0.5276\Emgu.CV.Runtime\Windows\Emgu.CV.Runtime.Windows.projitems" Label="Shared" />
+
+</Project>
