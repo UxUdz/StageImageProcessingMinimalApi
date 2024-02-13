@@ -4,6 +4,7 @@ using Emgu.CV;
 using System.Security.Cryptography;
 using System.Drawing;
 using StageImageProcessingMinimalApi.Utilities;
+using Emgu.CV.Structure;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://localhost:5000");  // Specify the desired port
@@ -177,27 +178,92 @@ app.MapPost("/decryptSteganography", async context =>
             
             var response = new { DecryptedBase64 = decryptedBase64};
             await context.Response.WriteAsJsonAsync(response); 
-                   }
+        }
+    }
+});
+
+app.MapPost("/changedetection", async (HttpContext context) =>
+        {
+            var form = await context.Request.ReadFormAsync();
+            IFormFile imageFile1 = form.Files["image1"];
+            IFormFile imageFile2 = form.Files["image2"];
+            double thresholdValue ;
+            if(!double.TryParse(form["thresholdValue"],out thresholdValue))
+            thresholdValue=30;
+
+            if (imageFile1 == null || imageFile2 == null)
+            {
+                context.Response.StatusCode = 400; 
+                await context.Response.WriteAsync("Both images must be provided.");
+                return;
+            }
+            Mat image1 = new Mat();
+            image1 = ReadImageFromFormFile(imageFile1);
+
+            Mat image2 = new Mat();
+            image2 = ReadImageFromFormFile(imageFile2);
+
+            Mat result = new Mat();
+            CvInvoke.AbsDiff(image1, image2, result);
+            CvInvoke.CvtColor(result, result, ColorConversion.Bgr2Gray);
+            CvInvoke.Threshold(result, result, thresholdValue, 255, ThresholdType.Binary);
+
+
+            image2.SetTo(new MCvScalar(0, 0, 255), result);
+
+
+            using (VectorOfByte vb = new VectorOfByte())
+            {
+                CvInvoke.Imencode(".jpg", image2, vb);
+                using (MemoryStream ms = new MemoryStream(vb.ToArray()))
+                {
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    var response = new { OutputImageBase64 = base64};
+                     await context.Response.WriteAsJsonAsync(response); 
+                }
+            }
+        });
+
+app.MapGet("/timenow", async (HttpContext context) =>
+{
+    using (Mat img = new Mat(100, 800, DepthType.Cv8U, 3))
+    {
+        img.SetTo(new Emgu.CV.Structure.MCvScalar(0, 0, 0));
+        CvInvoke.PutText(
+            img,
+            String.Format("The time is: {0}", DateTime.Now.ToString()),
+            new System.Drawing.Point(20, img.Height - 20),
+            Emgu.CV.CvEnum.FontFace.HersheyPlain,
+            2.0,
+            new Emgu.CV.Structure.MCvScalar(255.0, 255.0, 255.0),
+            1, LineType.EightConnected, false);
+
+        context.Response.ContentType = "image/jpeg";
+
+        using (VectorOfByte vb = new VectorOfByte())
+        {
+            CvInvoke.Imencode(".jpg", img, vb);
+            using (MemoryStream ms = new MemoryStream(vb.ToArray()))
+            {
+                await ms.CopyToAsync(context.Response.Body);
+            }
+        }
     }
 });
 
 app.Run();
 
-byte[] GenerateKey()
-{
+byte[] GenerateKey(){
     using (var rng = RandomNumberGenerator.Create())
     {
-        var key = new byte[16]; // 128-bit key for AES
+        var key = new byte[16]; 
         rng.GetBytes(key);
         return key;
     }
 }
 byte[] GetKeyFromString(string keyString)
 {
-    // Convert the string to bytes using UTF-8 encoding
-    byte[] keyBytes;
-    // Ensure the key is 16 bytes long by either padding or truncating
-   
+    byte[] keyBytes;   
     try
     {
         keyBytes= Convert.FromBase64String(keyString);
@@ -250,4 +316,16 @@ void DecryptImage(Stream input, Stream output, byte[] key)
             input.CopyTo(cryptoStream);
         }
     }
+}
+
+Mat ReadImageFromFormFile(IFormFile file)
+{
+    Mat image = new Mat();
+    using (MemoryStream ms = new MemoryStream())
+    {
+        file.CopyTo(ms);
+        byte[] imageData = ms.ToArray();
+        CvInvoke.Imdecode(imageData, ImreadModes.Color, image);
+    }
+    return image;
 }

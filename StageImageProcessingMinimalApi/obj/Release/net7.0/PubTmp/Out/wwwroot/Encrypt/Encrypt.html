@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt Image</title>
+    <link rel="stylesheet" href="EncryptStyle.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="../image/Image1.png" alt="logo">
+            <p>ASAL</p>
+        </div>
+        <ul>
+            <li><a class="active" href="#">Encrypt</a></li>
+            <li><a href="../Decrypt/DecryptPage.html">Decrypt</a></li>
+            <li><a href="../EncryptSteganography/EncryptSteganography.html">Encrypt Steganography</a></li>
+            <li><a href="../DecryptSteganography/DecryptSteganography.html">Decrypt Steganography</a></li>
+            <li><a href="../ChangeDetection/ChangeDetection.html">Change Detection</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Encrypt Image </h1>
+    </header>
+    <main>
+        <div class="left-container">
+            <div class="container">
+                <div class="header-section">
+                    <h1>Upload Image</h1>
+                    <p>Images </p>
+                    <p>png, jpg, jpeg </p>
+                </div>
+                <div class="drop-section">
+                    <div class="col">
+                        <div class="cloud-icon">
+                            <img src="../icons/cloud.png" alt="cloud">
+                        </div>
+                        <span>Drag & Drop your files here</span>
+                        <span>OR</span>
+                        <button class="file-selector">Browse Files</button>
+                        <!-- <input type="file" class="file-selector-input" multiple> -->
+
+                        <input type="file" class="file-selector-input" id="encryptImageInput" accept="image/*">
+
+                    </div>
+                    <div class="col">
+                        <div class="drop-here">Drop Here</div>
+                    </div>
+                </div>
+                <div class="list-section">
+                    <div class="list-title">Uploaded Files</div>
+                    <div class="list"></div>
+                </div>
+                <script src="../Scripts/UploadFile.js"></script>
+            </div>
+
+            <div class="encryptionKeyContainer">
+                <div class="encryptionKey-section">
+                    <p>Encryption Key :</p>
+                    <input type="text" id="encryptionKey" placeholder="Enter encryption key">
+                    <!-- <input type="text" placeholder="Enter encryption key" > -->
+                </div>
+                <div class="encryptionButtonContainer">
+                    <button onclick="encryptImage()">Encrypt Image</button>
+                    <!-- <button id="encryptionButton" onclick="showContainer()">ENCRYPT </button> -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-container">
+            <div class="Encrypt-container">
+                <div class="Encrypt-header-section">
+                    <h1>Encrypted String</h1>
+                    <p>Base64String </p>
+                </div>
+                <div class="textarea-section">
+                    <div class="text-Container">
+                        <!-- Display result -->
+                        <textarea name="" id="TextdisplayEncryptedImage" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="Download-Container">
+                <div class="Decrypt-section">
+                    <span>Decrypt the image   .<a href="../Decrypt/DecryptPage.html"> here</a></span>
+                </div>
+                <div class="Download-section">
+                    <button id="Download-button" onclick="copyTextarea()">Copy String</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        async function encryptImage() {
+            const imageInput = document.getElementById('encryptImageInput');
+            const encryptionKey = document.getElementById('encryptionKey');
+
+            const formData = new FormData();
+            formData.append('image', imageInput.files[0]);
+            formData.append('encryptionKey', encryptionKey.value);
+
+            const response = await fetch('/encrypt', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            let displayEncryptedImage = document.getElementById('TextdisplayEncryptedImage');
+            displayEncryptedImage.value = result.encryptedImage;
+            
+            if (encryptionKey.value === null ||  encryptionKey.value === '') {
+                encryptionKey.value = result.encryptionKey;
+            }
+        }
+
+        function copyTextarea() {
+            var textarea = document.getElementById("TextdisplayEncryptedImage");
+            textarea.select();
+            document.execCommand("copy");
+            textarea.setSelectionRange(0, 0);
+        }
+    </script>
+
+</body>
+</html>

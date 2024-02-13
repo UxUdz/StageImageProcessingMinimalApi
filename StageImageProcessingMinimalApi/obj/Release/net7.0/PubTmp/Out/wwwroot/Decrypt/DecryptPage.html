@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decryption </title>
+    <link rel="stylesheet" href="DecryptStyle.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="../image/Image1.png" alt="logo">
+            <p>ASAL</p>
+        </div>
+        <ul>
+            <li><a  href="../Encrypt/Encrypt.html">Encrypt</a></li>
+            <li><a class="active" href="#">Decrypt</a></li>
+            <li><a href="../EncryptSteganography/EncryptSteganography.html">Encrypt Steganography</a></li>
+            <li><a href="../DecryptSteganography/DecryptSteganography.html">Decrypt Steganography</a></li>
+            <li><a href="../ChangeDetection/ChangeDetection.html">Change Detection</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Decrypt image</h1>
+    </header>
+    <main>
+        <div class="left-container">
+            <div class="container">
+                <div class="Encrypt-container">
+                    <div class="Encrypt-header-section">
+                        <h1>Encrypted String </h1>
+                        <p>Base64String </p>
+                    </div>
+                    <div class="textarea-section">
+                        <div class="text-Container">
+                            <textarea name="" id="encryptedImage" cols="30" rows="10"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="encryptionKeyContainer">
+                <div class="encryptionKey-section">
+                    <p>Decryption Key :</p>
+                    <input type="text" id="decryptionKey" placeholder="Enter decryption key" >
+                </div>
+                <div class="encryptionButtonContainer">
+                    <button onclick="decryptImage()">Decrypt String</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-container">
+            <div class="Encrypt-container">
+                <div class="Encrypt-header-section">
+                    <h1>decrypted Image</h1>
+                    <p>Images </p>
+                </div>
+                <div class="image-section">
+                    <div class="image-Container">
+                        <img src="" id="ImgdisplayDecryptedImage" alt="">
+                    </div>
+                    <div class="image-description">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="Download-Container">
+                <div class="Decrypt-section">
+                    <span>Ecrypt the image   .<a href="../Encrypt/Encrypt.html">here</a></span>
+                </div>
+                <div class="Download-section">
+                    <button id="Download-button" onclick="downloadImage()">Download </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        async function decryptImage() {
+            const encryptedImage = document.getElementById('encryptedImage').value;
+            const decryptionKey = document.getElementById('decryptionKey').value;
+
+            const formData = new FormData();
+            formData.append('encryptedImageBase64', encryptedImage);
+            formData.append('decryptionKey', decryptionKey);
+
+            const response = await fetch('/decrypt', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            let displayDecryptedImage = document.getElementById('ImgdisplayDecryptedImage');
+            displayDecryptedImage.src = 'data:image/png;base64,' + result.decryptedBase64;
+        }
+
+        function downloadImage() {
+            var image = document.getElementById("ImgdisplayDecryptedImage");
+            var downloadLink = document.createElement("a");
+            downloadLink.href = image.src;
+            downloadLink.download = "decrypted_Image.png";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
+</body>
+</html>

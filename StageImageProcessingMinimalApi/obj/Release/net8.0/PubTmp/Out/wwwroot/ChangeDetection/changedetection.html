@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Detection </title>
+    <link rel="stylesheet" href="changedetection.css">
+</head>
+<body>
+    <nav>
+        </label>
+        <div class="logo">
+            <img src="../image/Image1.png" alt="logo">
+            <p>ASAL</p>
+        </div>
+        <ul>
+            <li><a  href="../Encrypt/Encrypt.html">Encrypt</a></li>
+            <li><a href="../Decrypt/DecryptPage.html">Decrypt</a></li>
+            <li><a href="../EncryptSteganography/EncryptSteganography.html">Encrypt Steganography</a></li>
+            <li><a href="../DecryptSteganography/DecryptSteganography.html">Decrypt Steganography</a></li>
+            <li><a class="active" href="#">Change Detection</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Change Detection  </h1>
+    </header>
+    <main>
+        <div class="left-container">
+            <div class="container">
+                <div class="header-section">
+                    <h1>Upload Image</h1>
+                    <p>Choose Two Image</p>
+                    <p>png, jpg, jpeg </p>
+                </div>
+                <div class="drop-section">
+                    <div class="col">
+                        <div class="cloud-icon">
+                            <img src="../icons/cloud.png" alt="cloud">
+                        </div>
+                        <span>Drag & Drop your files here</span>
+                        <span>OR</span>
+                        <button class="file-selector">Browse Files</button>
+                        <input type="file" class="file-selector-input" id="encryptImageInput" accept="image/*" multiple>
+                        <!-- <input type="file" id="encryptSteganographyImageInput" accept="image/*"> -->
+
+                    </div>
+                    <div class="col">
+                        <div class="drop-here">Drop Here</div>
+                    </div>
+                </div>
+                <div class="list-section">
+                    <div class="list-title">Uploaded Files</div>
+                    <div class="list"></div>
+                </div>
+                <script src="../Scripts/UploadFile.js"></script>
+            </div>
+
+            <div class="encryptionKeyContainer">
+                <div class="encryptionKey-section">
+                    <p>Threshold Value :</p>
+                    <input type="text" id="thresholdValue" placeholder="Enter threshold value" >
+                </div>
+                <div class="encryptionButtonContainer">
+                    <button onclick="changedetection()">Image Detection</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-container">
+            <div class="container">
+                <div class="Encrypt-header-section">
+                    <h1>Detected Change </h1><br>
+                    <p>The result</p>
+                </div>
+                <div class="image-section">
+                    <div class="image-Container">
+                        <img src="" id="ImgdisplayEcryptedImage" alt="">
+                    </div>
+                    <div class="image-description">
+                        <p>The red point represents the difference between the first image and the second image </p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="Download-Container">
+                <div class="Decrypt-section">
+                    <span>If you want to download, click the button</span>
+                </div>
+                <div class="Download-section">
+                    <button id="Download-button" onclick="downloadImage()">Download </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+    async function changedetection() {
+            const imageInput = document.getElementById('encryptImageInput');
+            const thresholdValueInput = document.getElementById('thresholdValue');
+
+            const formData = new FormData();
+
+            formData.append('image1', imageInput.files[0]);
+            formData.append('image2', imageInput.files[1]);
+            formData.append('thresholdValue', thresholdValueInput.value);
+
+            const response = await fetch('/changedetection', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            let displayEncryptedImage = document.getElementById('ImgdisplayEcryptedImage');
+            displayEncryptedImage.src ='data:image/png;base64,' + result.outputImageBase64;
+        }
+
+        function downloadImage() {
+            var image = document.getElementById("ImgdisplayEcryptedImage");
+            var downloadLink = document.createElement("a");
+            downloadLink.href = image.src;
+            downloadLink.download = "detection_Image.png";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
+</body>
+</html>

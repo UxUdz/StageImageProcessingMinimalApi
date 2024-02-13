@@ -14,9 +14,9 @@
 	<PackageReference Include="System.Drawing.Common" Version="8.0.0" />
   </ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="C:\Emgu\emgucv-windesktop 4.7.0.5276\Emgu.CV.Platform\NetStandard\Emgu.CV.Platform.NetStandard.csproj" />
+		<ProjectReference Include="C:\Emgu\emgucv-windesktop 4.8.0.5324\Emgu.CV.Platform\NetStandard\Emgu.CV.Platform.NetStandard.csproj" />
 	</ItemGroup>
 
-	<Import Project="C:\Emgu\emgucv-windesktop 4.7.0.5276\Emgu.CV.Runtime\Windows\Emgu.CV.Runtime.Windows.projitems" Label="Shared" />
+	<Import Project="C:\Emgu\emgucv-windesktop 4.8.0.5324\Emgu.CV.Runtime\Windows\Emgu.CV.Runtime.Windows.projitems" Label="Shared" />
 
 </Project>

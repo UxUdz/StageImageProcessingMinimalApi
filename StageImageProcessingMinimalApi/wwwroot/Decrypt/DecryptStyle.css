@@ -1,0 +1,462 @@
+*{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+nav{
+    margin-bottom: 20px;
+}
+header{
+    text-align: center;
+    margin-bottom: 20px;
+}
+header h1{
+    margin: 5px;
+    color: #707EA0;
+}
+main{
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px;
+}
+.left-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.right-form{
+    float: right;
+}
+.encryptionKeyContainer{
+    width: 100%;
+    height: 100px;
+    max-width: 600px;
+    max-height: 250px;
+    margin-top: 25px;
+    border-radius: 16px;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    border: 1px dashed #A8B3E3;
+    background-image: linear-gradient(180deg, white, #F1F6FF);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.encryptionKey-section{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    color: #707EA0;
+}
+
+.encryptionKeyContainer .encryptionKey-section input{
+    margin-top: 5px;
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+    text-align: center;
+}
+.encryptionButtonContainer button{
+    background-color: #5874C6;
+    width: 150px;
+    height: 30px;
+    border-radius: 8px;
+    color: white;
+}
+
+/* main .right-container{
+    display: none;
+} */
+
+.textarea-section .text-Container textarea{
+    border: 2px dashed #A8B3E3;
+    min-width: 425px;
+    min-height: 275px;
+    border-radius: 8px;
+    color: black;
+}
+
+
+/* ---------------------------- */
+
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0082e6;
+    height: 80px;
+    width: 100%;
+}
+.logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0 50px;
+}
+.logo p {
+    color: white;
+    font-size: 35px;
+    line-height: 80px;
+    font-weight: bold;
+}
+.logo img{
+    width: 70px;
+    height: 70px;
+}
+nav ul {
+    float: right;
+    margin-right: 10px;
+}
+nav ul li {
+    display: inline-block;
+    line-height: 20px;
+}
+nav ul li a {
+    color: white;
+    font-size: 17px;
+    padding: 7px 13px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+a.active, a:hover{
+    background: #1b9bff;
+    transition: .5s;
+}
+
+
+@media (max-width:952px){
+    label.logo{
+        font-size: 30px;
+        padding-left: 50px;
+    }
+    nav ul li a {
+        font-size: 16px;
+    }
+}
+@media (max-width: 858px){
+    ul{
+        position: fixed;
+        width: 100px;
+        height: 100vh;
+        background: #2c3e50;
+        top: 80px;
+        /* left: -100px; */
+        text-align: center;
+        translate: all .5s;
+    }
+    nav ul li {
+        display: block;
+        margin: 50px 0;
+        line-height: 30px;
+    }
+    nav ul li a {
+        font-size: 20px;
+    }
+    a:hover, a.active{
+        background-color: none;
+        color: #0082e6;
+    }
+}
+
+
+/* ------------------- */
+
+.container{
+    text-align: center;
+    width: 100% - 20px;
+    min-width: 600px;
+    min-height: auto;
+    margin: auto;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.header-section{
+    padding: 25px 0px;
+}
+.header-section h1{
+    font-weight: 500;
+    font-size: 1.7rem;
+    text-transform: uppercase;
+    color: #707EA0;
+    margin: 0px;
+    margin-bottom: 8px;
+}
+.header-section p{
+    margin: 5px;
+    font-size: 0.95rem;
+    color: #707EA0;
+}
+
+.drop-section{
+    min-height: 250px;
+    border: 1px dashed #A8B3E3;
+    background-image: linear-gradient(180deg, white, #F1F6FF);
+    margin: 5px 35px 35px 35px;
+    border-radius: 12px;
+    position: relative;
+}
+.drop-section div.col:first-child{
+    opacity: 1;
+    visibility: visible;
+    transition-duration: 0.2s;
+    transform: scale(1);
+    width: 200px;
+    margin: auto;
+}
+.drop-section div.col:last-child{
+    font-size: 40px;
+    font-weight: 700;
+    color: #c0cae1;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    width: 200px;
+    height: 55px;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.6);
+    transition-duration: 0.2s;
+}
+/* we will use "drag-over-effect" class in js */
+.drag-over-effect div.col:first-child{
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(1.1);
+}
+.drag-over-effect div.col:last-child{
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+.drop-section .cloud-icon{
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+.drop-section span,
+.drop-section button{
+    display: block;
+    margin: auto;
+    color: #707EA0;
+    margin-bottom: 10px;
+}
+.drop-section button{
+    color: white;
+    background-color: #5874C6;
+    border: none;
+    outline: none;
+    padding: 7px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+.drop-section input{
+    display: none;
+}
+
+.list-section{
+    display: none;
+    text-align: left;
+    margin: 0px 35px;
+    padding-bottom: 20px;
+}
+.list-section .list-title{
+    font-size: 0.95rem;
+    color: #707EA0;
+}
+.list-section li{
+    display: flex;
+    margin: 15px 0px;
+    padding-top: 4px;
+    padding-bottom: 2px;
+    border-radius: 8px;
+    transition-duration: 0.2s;
+}
+.list-section li:hover{
+    box-shadow: #E3EAF9 0px 0px 4px 0px, #E3EAF9 0px 12px 16px 0px;
+}
+.list-section li .col{
+    flex: .1;
+}
+.list-section li .col:nth-child(1){
+    flex: .15;
+    text-align: center;
+}
+.list-section li .col:nth-child(2){
+    flex: .75;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #3e4046;
+    padding: 8px 10px;
+}
+.list-section li .col:nth-child(2) div.name{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    display: inline-block;
+}
+.list-section li .col .file-name span{
+    color: #707EA0;
+    float: right;
+}
+.list-section li .file-progress{
+    width: 100%;
+    height: 5px;
+    margin-top: 8px;
+    border-radius: 8px;
+    background-color: #dee6fd;
+}
+.list-section li .file-progress span{
+    display: block;
+    width: 0%;
+    height: 100%;
+    border-radius: 8px;
+    background-image: linear-gradient(120deg, #6b99fd, #9385ff);
+    transition-duration: 0.4s;
+}
+.list-section li .col .file-size{
+    font-size: 0.75rem;
+    margin-top: 3px;
+    color: #707EA0;
+}
+.list-section li .col svg.cross,
+.list-section li .col svg.tick{
+    fill: #8694d2;
+    background-color: #dee6fd;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+.list-section li .col svg.tick{
+    fill: #50a156;
+    background-color: transparent;
+}
+.list-section li.complete span,
+.list-section li.complete .file-progress,
+.list-section li.complete svg.cross{
+    display: none;
+}
+.list-section li.in-prog .file-size,
+.list-section li.in-prog svg.tick{
+    display: none;
+}
+
+
+/* -------------------- */
+
+.Encrypt-container{
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    min-height: 435px;
+    margin: auto;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.Encrypt-header-section{
+    padding: 25px 0px;
+}
+.Encrypt-header-section h1{
+    font-weight: 500;
+    font-size: 1.7rem;
+    text-transform: uppercase;
+    color: #707EA0;
+    margin: 0px;
+    margin-bottom: 8px;
+}
+.Encrypt-header-section p{
+    margin: 5px;
+    font-size: 0.95rem;
+    color: #707EA0;
+}
+
+.image-section{
+    min-height: 250px;
+    border: 1px dashed #A8B3E3;
+    background-image: linear-gradient(180deg, white, #F1F6FF);
+    margin: 5px 35px 35px 35px;
+    border-radius: 12px;
+    position: relative;
+}
+.image-section .image-Container{
+    width: auto;
+    height: 100%;
+}
+.image-Container img{
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 15px;
+}
+.image-Container img{
+    max-width: 700px;
+    max-width: 500px;
+    border-radius: 15px;
+}
+
+.right-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Download-Container{
+    width: 100%;
+    height: 100px;
+    max-width: 600px;
+    max-height: 250px;
+    margin-top: 25px;
+    border-radius: 16px;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    border: 1px dashed #A8B3E3;
+    background-image: linear-gradient(180deg, white, #F1F6FF);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.Decrypt-section{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+}
+
+.Download-Container .Decrypt-section input{
+    margin-top: 5px;
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+    text-align: center;
+}
+.Download-section button{
+    background-color: #5874C6;
+    width: 150px;
+    height: 30px;
+    border-radius: 8px;
+    color: white;
+}
+
+.Decrypt-section span {
+    margin: 5px;
+    font-size: 0.95rem;
+    color: #707EA0;
+}
